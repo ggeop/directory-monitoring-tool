@@ -1,14 +1,33 @@
 #!/bin/bash
-#PARAMETERS
-TARGET_DIR=${1:-empty}
+
+#ARGUMENTS
+for ARGUMENT in "$@"
+do
+
+    KEY=$(echo $ARGUMENT | cut -f1 -d=)
+    VALUE=$(echo $ARGUMENT | cut -f2 -d=)
+
+    case "$KEY" in
+            TARGET_DIR)              TARGET_DIR=${VALUE} ;;
+            LIMIT_SIZE_MB)           LIMIT_SIZE_MB=${VALUE} ;;
+            REFRESH_PERIOD)          REFRESH_PERIOD=${VALUE} ;;
+            REMOVE_LARGE_FILES)      REMOVE_LARGE_FILES=${VALUE} ;;
+            *)
+    esac
+
+
+done
+
+#ARGUMENTS DEFAULT VALUES
+TARGET_DIR=${TARGET_DIR:-empty}
 if [ $TARGET_DIR = empty ]
   then
     echo "Please insert target dir!"
     exit
 fi
-LIMIT_SIZE_MB=${2:-100}
-REFRESH_PERIOD=${3:-60}
-REMOVE_LARGE_FILES=${4:false}
+LIMIT_SIZE_MB=${LIMIT_SIZE_MB:-100}
+REFRESH_PERIOD=${REFRESH_PERIOD:-60}
+REMOVE_LARGE_FILES=${REMOVE_LARGE_FILES:false}
 
 #LOGGING
 user="$USER"
@@ -17,6 +36,7 @@ log_file=/home/$user/logs/dir_monitoring_util.log
 mkdir -p $log_path
 touch $log_file
 
+#Transform Mb --> Kb
 limit_size_byte=$((1000000*$LIMIT_SIZE_MB))
 
 check (){
