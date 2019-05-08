@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#ARGUMENTS
+# ARGUMENTS
 for ARGUMENT in "$@"
 do
 
@@ -18,7 +18,7 @@ do
 
 done
 
-#ARGUMENTS DEFAULT VALUES
+# ARGUMENTS DEFAULT VALUES
 TARGET_DIR=${TARGET_DIR:-empty}
 if [ $TARGET_DIR = empty ]
   then
@@ -29,14 +29,22 @@ LIMIT_SIZE_MB=${LIMIT_SIZE_MB:-100}
 REFRESH_PERIOD=${REFRESH_PERIOD:-60}
 REMOVE_LARGE_FILES=${REMOVE_LARGE_FILES:false}
 
-#LOGGING
+# LOGGING
 user="$USER"
 log_path=/home/$user/logs
 log_file=/home/$user/logs/dir_monitoring_util.log
 mkdir -p $log_path
 touch $log_file
 
-#Transform Mb --> Kb
+# SIGNAL HANDLING
+exit_gracefully() {
+    echo "The util finished gracefully in date:" $now >> $log_file
+    trap - SIGINT SIGTERM # clear the trap
+    kill -- -$$ # Sends SIGTERM to child/sub processes
+}
+trap exit_gracefully SIGINT SIGTERM
+
+# Transform Mb --> Kb
 limit_size_byte=$((1000000*$LIMIT_SIZE_MB))
 
 check (){
@@ -56,7 +64,7 @@ check (){
 
 drop(){
   rm -rf $DIR
-  echo $DIR Deleted Successfully!
+  echo $DIR "Deleted Successfully!"
 }
 
 now=$(date)
