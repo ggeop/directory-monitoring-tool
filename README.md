@@ -1,7 +1,7 @@
-# Directory Monitoring Tool
+# Directory Monitoring Tool :file_folder:
 A simple bash tool for monitoring the size of objects inside a directory.
 
-## How to run
+## How to run :runner:
 Make dir_monitoring_util.sh executable
 ```{shell}
 cmhod +x dir_monitoring_util.sh
@@ -17,7 +17,7 @@ Script parameters:
 * `REFRESH_PERIOD (interger):` The refreshing period of the tool in seconds (default value=60)
 * `REMOVE_LARGE_FILES (boolean):` `true` if you want to delete the files/dirs higher than the `LIMIT_SIZE_MB` and `false` if you want to keep them and only log the event. (default value=false)
 
-## Example
+## Example :hammer:
 Let's take an example. Run the tool with `TARGET_DIR=\target_dir` & `LIMIT_SIZE_MB=100`.
 Before the tool run:
 ```{shell}
@@ -40,7 +40,7 @@ After the run of the tool:
 ```
 
 
-## Notes
+## Notes :exclamation:
 * The log file is in /home/**user**/logs/dir_monitoring_util.log.
 * Doesn't work with directories with numbers in the names (e.x dir_1).
 * Loop in the sub-directories of the `TARGET_DIR`, not nested checks.
