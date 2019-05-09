@@ -53,7 +53,7 @@ check (){
 
   if [ $DIR_SIZE -ge $limit_size_byte ]
     then
-      echo "WARNING!: The directory size" $DIR "exceeds the" $limit_size_byte >> log_file
+      echo "WARNING!: The directory size" $DIR "exceeds the" $limit_size_byte >> $log_file
       if [ "$REMOVE_LARGE_FILES" = true ]
         then
           drop "$DIR"
@@ -64,7 +64,7 @@ check (){
 
 drop(){
   rm -rf $DIR
-  echo $DIR "Deleted Successfully!"
+  echo $DIR "Deleted Successfully!" >> $log_file
 }
 
 now=$(date)
